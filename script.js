@@ -12,10 +12,7 @@ function makePageForEpisodes(episodeList) {
   return rootElem;
 }
 
-//implement a function that create episode code.
-//1: gets season number, and episode number
-//2: pad the no. with zero and concatenate a string
-//e.g Season2 episode 7 should evaluate to S02E07
+
 function episodeCode(episode) {
   // Extract season and episode numbers
   const season = episode.season.toString().padStart(2, '0');
@@ -28,6 +25,7 @@ function episodeCode(episode) {
 
 //getOneEpisode returns an obj with info for one episode.
 const episode = getOneEpisode();
+const episodes = getAllEpisodes();
 
 //create a function that fill in the tag and append it.
 const createEpisodeCard = (episode) =>{
@@ -41,8 +39,10 @@ episodeCard.querySelector("#summary").innerHTML = episode.summary;
 return episodeCard;
 }
 
-const episodeCard = createEpisodeCard(episode);
-document.body.append(episodeCard);
+
+const episodeCards = episodes.map(createEpisodeCard);
+document.body.append(...episodeCards);
+
 
 
 

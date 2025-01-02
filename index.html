@@ -9,6 +9,16 @@
   </head>
 
   <body>
+    <header>
+      <p>
+        Data originally sourced from
+        <a href="https://www.tvmaze.com/" target="_blank">TVMaze.com</a>.
+      </p>
+      <p>
+        For more information, view the
+        <a href="https://www.tvmaze.com/api#licensing" target="_blank">TVMaze API Licensing</a>.
+      </p>
+    </header>
     <div id="root">
     </div>
     <template id="episode-card">
@@ -19,10 +29,9 @@
         <p id="summary">Episode Summary</p>
       </section>
     </template>
-
+    
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
-
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>
