@@ -38,12 +38,12 @@ episodeCard.querySelector("#summary").innerHTML = oneEpisode.summary;
 
 return episodeCard;
 }
-
-
+render();
+function render(){
 const episodeCards = allEpisodes.map(createEpisodeCard);
 document.body.append(...episodeCards);
 
-
+}
 
 
 
