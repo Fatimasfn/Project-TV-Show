@@ -15,10 +15,10 @@ function makePageForEpisodes(episodeList) {
 
 function episodeCode(episode) {
   // Extract season and episode numbers
-  const season = episode.season.toString().padStart(2, '0');
-  const number = episode.number.toString().padStart(2, '0');
+  const episodeSeason = episode.season.toString().padStart(2, '0');
+  const episodeNumber = episode.number.toString().padStart(2, '0');
   // Concatenate the formatted string
-  return `S${season}E${number}`;
+  return `S${episodeSeason}E${episodeNumber}`;
 }
 
 
