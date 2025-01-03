@@ -24,23 +24,23 @@ function episodeCode(episode) {
 
 
 //getOneEpisode returns an obj with info for one episode.
-const episode = getOneEpisode();
-const episodes = getAllEpisodes();
+const oneEpisode = getOneEpisode();
+const allEpisodes = getAllEpisodes();
 
 //create a function that fill in the tag and append it.
-const createEpisodeCard = (episode) =>{
+const createEpisodeCard = (oneEpisode) =>{
 
 const episodeCard = document.getElementById("episode-card").content.cloneNode(true);
-episodeCard.querySelector("h3").textContent = episode.name;
-episodeCard.querySelector("#episode-code").textContent = `${episodeCode(episode)}`;
-episodeCard.querySelector("img").src = episode.image.medium;
-episodeCard.querySelector("#summary").innerHTML = episode.summary;
+episodeCard.querySelector("h3").textContent = oneEpisode.name;
+episodeCard.querySelector("#episode-code").textContent = `${episodeCode(oneEpisode)}`;
+episodeCard.querySelector("img").src = oneEpisode.image.medium;
+episodeCard.querySelector("#summary").innerHTML = oneEpisode.summary;
 
 return episodeCard;
 }
 
 
-const episodeCards = episodes.map(createEpisodeCard);
+const episodeCards = allEpisodes.map(createEpisodeCard);
 document.body.append(...episodeCards);
 
 
