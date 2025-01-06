@@ -2,7 +2,7 @@
 
 function setup() {
   const allEpisodes = getAllEpisodes();
-  return makePageForEpisodes(state.filteredFilms);
+ // return makePageForEpisodes(state.filteredFilms);
 }
 //sets text to the root element in the html
 /*function makePageForEpisodes(episodeList) {
@@ -83,10 +83,23 @@ function clear(){
 const selectEpisode=document.getElementById("dropDown")
 allEpisodes.forEach(episode=>{
 const option = document.createElement("option");
+
 option.textContent = episodeCode(episode)+" "+episode.name
+option.value=episode.name
+
 
 // Append the option to the dropdown
 selectEpisode.appendChild(option);
+
 })
+selectEpisode.addEventListener("change", () => {
+  const selectedOption = selectEpisode.options[selectEpisode.selectedIndex];
+  state.searchTerm=selectedOption.value.toLocaleLowerCase()
+  state.filteredFilms=state.allEpisodes.filter((film)=>{
+    return film.name.toLocaleLowerCase().includes(state.searchTerm)
+  })
+   render()
+   
+});
 
 window.onload = setup;
