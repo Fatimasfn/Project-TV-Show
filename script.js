@@ -57,8 +57,8 @@ input.addEventListener("keyup", () => {
  
 
 
- const num=document.getElementById("episodsNumber")
-    num.textContent=`the number of matched episodes:${state.filteredFilms.length}`
+ const numberOfFilteredEpisodes=document.getElementById("episodsNumber")
+ numberOfFilteredEpisodes.textContent=`the number of matched episodes:${state.filteredFilms.length}`
  
 });
 
@@ -79,5 +79,14 @@ function clear(){
  
   elements.forEach(element=>element.remove())
 }
+
+const selectEpisode=document.getElementById("dropDown")
+allEpisodes.forEach(episode=>{
+const option = document.createElement("option");
+option.textContent = episodeCode(episode)+" "+episode.name
+
+// Append the option to the dropdown
+selectEpisode.appendChild(option);
+})
 
 window.onload = setup;
