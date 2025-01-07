@@ -68,6 +68,7 @@ function render() {
   clear();
   const episodeCards = state.filteredFilms.map(createEpisodeCard);
   document.body.append(...episodeCards);
+  
 }
 
   render()
@@ -99,7 +100,23 @@ selectEpisode.addEventListener("change", () => {
     return film.name.toLocaleLowerCase().includes(state.searchTerm)
   })
    render()
+   backBtn()
    
 });
+function backBtn(){
+  const getBackBtn= document.createElement("label")
+  const backBtn=document.getElementById("backBtnDiv")
+ getBackBtn.textContent="back"
+  backBtn.appendChild(getBackBtn)
+  getBackBtn.style.fontSize="30px"
+  getBackBtn.style.color="red"
+  getBackBtn.addEventListener("click",()=>{
+    state.filteredFilms=allEpisodes
+    getBackBtn.remove()
+    render()
+  })
+}
+
+  
 
 window.onload = setup;
