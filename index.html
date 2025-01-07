@@ -10,41 +10,32 @@
 
   <body>
     <header>
-      <p>
-        Data originally sourced from
-        <a href="https://www.tvmaze.com/" target="_blank">TVMaze.com</a>.
-      </p>
-      <p>
-        For more information, view the
-        <a href="https://www.tvmaze.com/api#licensing" target="_blank">TVMaze API Licensing</a>.
-      </p>
-      <input id="searchInput" placeholder="Enter your search here ..." type="search">
-      <p></p>
-      
-      <label id="episodsNumber"></label>
+      <div>
+        <label id="episodesNumber">Displaying 73/73 episodes</label>
+        <input id="searchInput" placeholder="Enter your search here ..." type="search">
+        <label for="dropDown"></label>
+        <select id="dropDown" name="options">
+          <option value="" disabled selected>Select an episode</option>
+        </select>
+      </div>
+    </header>
 
-<p></p>
-      <label for="dropDown">choose an episode</label>
-      <p></p>
-      <select id="dropDown" name="options">
-        <option value="" id="episodeOption"></option>
-        
-      </select>
-      
-
-         </header>
     <div id="root">
+      <template id="episode-card">
+        <section>
+          <h3>Episode Name</h3>
+          <p id="episode-code">Season: 1, Episode: 1</p>
+          <img src="" alt="Episode Image" />
+          <p id="summary">Episode Summary</p>
+        </section>
+      </template>
     </div>
-    <template id="episode-card">
-      <section>
-        <h3>Episode Name</h3>
-        <p id="episode-code">Season: 1, Episode: 1</p>
-        <img src="" alt="Episode Image" />
-        <p id="summary">Episode Summary</p>
-      </section>
-    </template>
-    
-    
+<footer>
+    Data originally sourced from
+    <a href="https://www.tvmaze.com/" target="_blank">TVMaze.com</a>.
+    For more information, view the
+    <a href="https://www.tvmaze.com/api#licensing" target="_blank">TVMaze API Licensing</a>.
+</footer>
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
     <!-- Loads YOUR javascript code -->
