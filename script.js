@@ -49,6 +49,13 @@ function renderEpisodeCards() {
   const episodeCards = state.filteredFilms.map(createEpisodeCard);
    root.append(...episodeCards); 
 }
+//Helper function deconstruct
+function deconstructCode(selectedText){
+  //returns substring of episode code 
+  const separatorIndex = selectedText.indexOf(" -");
+   return selectedText.substring(0, separatorIndex);
+}
+
 // Render function: Clears previous content and renders filtered episodes
 function render() {
   clear();
@@ -58,16 +65,42 @@ function render() {
 //initializing all variables
 const body = document.body;
 const root = document.getElementById("root");
-const oneEpisode = getOneEpisode();
-const allEpisodes = getAllEpisodes();
-const state = {
-  allEpisodes: allEpisodes,
+//const oneEpisode = getOneEpisode();
+//const allEpisodes = getAllEpisodes();
+let state = {
+  //allEpisodes: allEpisodes,
   searchTerm: "",
-  filteredFilms: allEpisodes
+  filteredFilms: [],
+  allEpisodes:[]
 };
 
-// Initial render
-renderEpisodeCards(allEpisodes);
+
+//level 300
+
+ function fetchEpisodes(){
+    return fetch("https://api.tvmaze.com/shows/82/episodes").then(function(data) {
+      return data.json()
+      .catch((error) => console.error("Failed to fetch episodes:", error));
+    })
+ }
+ 
+
+ fetchEpisodes().then(function(films){
+    console.log(films, "<---fetched films");
+    state.allEpisodes = films;
+    state.filteredFilms = films;
+  render();
+
+   // Populate the selectEpisode dropdown after fetching episodes
+  films.forEach((episode) => {
+    const option = document.createElement("option");
+    option.textContent = `${episodeCode(episode)} - ${episode.name}`;
+    option.value = episode.id; // Assuming each episode has a unique ID
+    selectEpisode.appendChild(option);
+  });
+ })
+
+
 
 
 // Event listener: Filters episodes based on search input
@@ -83,9 +116,9 @@ input.addEventListener("keyup", () => {
 
   // Update the number of matched episodes
   const episodeDisplayCounter = document.getElementById("episodesNumber");
-  episodeDisplayCounter.textContent = `Displaying ${state.filteredFilms.length}/73 episodes`;
-
-  render(state.filteredFilms);
+  episodeDisplayCounter.textContent = `Displaying ${state.filteredFilms.length}/ ${state.allEpisodes.length}`;
+ 
+  render();
 });
 
 
@@ -93,43 +126,44 @@ input.addEventListener("keyup", () => {
 const selectEpisode = document.getElementById("dropDown");
 
 // Loop through all episodes and create an <option> for each
-allEpisodes.forEach(episode => {
+/*state.allEpisodes.forEach(episode => {
   const option = document.createElement("option");
   option.textContent = `${episodeCode(episode)} - ${episode.name}`;
   option.value = episode.id; // Assuming each episode has a unique ID
   selectEpisode.appendChild(option);
-});
+});*/
 
-//Helper function deconstruct
-function deconstructCode(selectedText){
-  //returns substring of episode code 
-  const separatorIndex = selectedText.indexOf(" -");
-   return selectedText.substring(0, separatorIndex);
-}
+
 
 
 selectEpisode.addEventListener("change", (event) => {
-   const selectedText = event.target.selectedOptions[0].text;
+   state.searchTerm = event.target.selectedOptions[0].text;
 
   // loop through all episode find the match
- const foundEpisode = allEpisodes.find((episode) => 
-  deconstructCode(selectedText) === episodeCode(episode));
+   state.filteredFilms = state.allEpisodes.filter((episode) => 
+     deconstructCode(state.searchTerm) === episodeCode(episode));
 
-  clear();
-  //append to root
-  const episodeCard = createEpisodeCard(foundEpisode);
-  root.append(episodeCard); 
-//dynamically create a go back to all episode page
-  const button = document.createElement("button")
-  button.textContent = "go back to all episode"
-  root.append(button);
-  button.addEventListener("click",() => {
-      clear();
-      renderEpisodeCards(allEpisodes);
+  render()
+  
+  //dynamically create a go back to all episode page
+  if (!document.getElementById("goBackButton")) {
+    const button = document.createElement("button")
+    button.id = "goBackButton";
+    button.textContent = "go back to all episode"
+    root.append(button);
+      
+      button.addEventListener("click",() => {
+      //renderEpisodeCards(allEpisodes);
+      state.filteredFilms = state.allEpisodes; // Reset to all episodes
+      render();
       selectEpisode.selectedIndex = 0;
       button.remove();
-    });
+      });
+  }
  })
+
+ 
+
  
    
 
