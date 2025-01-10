@@ -49,6 +49,7 @@ function renderEpisodeCards() {
   const episodeCards = state.filteredFilms.map(createEpisodeCard);
    root.append(...episodeCards); 
 }
+
 //Helper function deconstruct
 function deconstructCode(selectedText){
   //returns substring of episode code 
@@ -61,6 +62,26 @@ function render() {
   clear();
   renderEpisodeCards();
 }
+
+//Show a loading message
+function showLoading() {
+  clear(); // Clear previous content
+  const loadingMessage = document.createElement("p");
+  loadingMessage.textContent = "Loading episodes, please wait...";
+  loadingMessage.id = "loadingMessage";
+  root.appendChild(loadingMessage);
+}
+
+// Show an error message
+function showError(error) {
+  clear(); // Clear previous content
+  const errorMessage = document.createElement("p");
+  errorMessage.textContent = `Error: ${error.message}`;
+  errorMessage.id = "errorMessage";
+  root.appendChild(errorMessage);
+}  
+
+
 
 //initializing all variables
 const body = document.body;
@@ -77,15 +98,27 @@ let state = {
 
 //level 300
 
- function fetchEpisodes(){
-    return fetch("https://api.tvmaze.com/shows/82/episodes").then(function(data) {
-      return data.json()
-      .catch((error) => console.error("Failed to fetch episodes:", error));
-    })
- }
+async function fetchEpisodes(){
+  showLoading(); //msg whilst it waits for data
+  try { const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+      if(!response.ok){
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      const data = await response.json();
+  
+      return data;
+      //else
+      } catch {
+        showError(error);
+        console.error("Failed to fetch episodes:", error);
+        return [];
+  }
+}
  
 
- fetchEpisodes().then(function(films){
+
+fetchEpisodes().then(function(films){
+    loadingMessage.remove()
     console.log(films, "<---fetched films");
     state.allEpisodes = films;
     state.filteredFilms = films;
@@ -99,9 +132,6 @@ let state = {
     selectEpisode.appendChild(option);
   });
  })
-
-
-
 
 // Event listener: Filters episodes based on search input
 const input = document.getElementById("searchInput");
@@ -124,17 +154,6 @@ input.addEventListener("keyup", () => {
 
 //200b
 const selectEpisode = document.getElementById("dropDown");
-
-// Loop through all episodes and create an <option> for each
-/*state.allEpisodes.forEach(episode => {
-  const option = document.createElement("option");
-  option.textContent = `${episodeCode(episode)} - ${episode.name}`;
-  option.value = episode.id; // Assuming each episode has a unique ID
-  selectEpisode.appendChild(option);
-});*/
-
-
-
 
 selectEpisode.addEventListener("change", (event) => {
    state.searchTerm = event.target.selectedOptions[0].text;
