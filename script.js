@@ -1,19 +1,7 @@
 //You can edit ALL of the code here
 
 function setup() {
-  const allEpisodes = getAllEpisodes();
- // return makePageForEpisodes(state.filteredFilms);
-}
-//sets text to the root element in the html
-/*function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${state.filteredFilms.length} episode(s)`;
-  return rootElem;
-}*/
-
-
-//Refactored version
-// Helper function: Generates an episode code in the format SxxExx
+  }
 function episodeCode(episode) {
   const episodeSeason = episode.season.toString().padStart(2, '0');
   const episodeNumber = episode.number.toString().padStart(2, '0');
