@@ -1,6 +1,8 @@
 //You can edit ALL of the code here
 
-function setup() {
+async function setup() {
+   await fetchShows()
+   await fetchEpisodes()
   }
 function episodeCode(episode) {
   const episodeSeason = episode.season.toString().padStart(2, '0');
@@ -80,7 +82,8 @@ let state = {
   //allEpisodes: allEpisodes,
   searchTerm: "",
   filteredFilms: [],
-  allEpisodes:[]
+  allEpisodes:[],
+  allShows:[]
 };
 
 
@@ -103,10 +106,25 @@ async function fetchEpisodes(){
   }
 }
  
+fetchEpisodes().then(function(films){
+    loadingMessage.remove()
+    console.log(data, "<---episode data");
+    state.allEpisodes = data;
+    state.filteredFilms = data;
+  render();
+
+   // Populate the selectEpisode dropdown after fetching episodes
+  state.allEpisodes.forEach((episode) => {
+    const option = document.createElement("option");
+    option.textContent = `${episodeCode(episode)} - ${episode.name}`;
+    option.value = episode.id; // Assuming each episode has a unique ID
+    selectEpisode.appendChild(option);
+  });
+ })
 
 
 fetchEpisodes().then(function(films){
-    loadingMessage.remove()
+    //loadingMessage.remove()
     console.log(films, "<---fetched films");
     state.allEpisodes = films;
     state.filteredFilms = films;
@@ -120,6 +138,44 @@ fetchEpisodes().then(function(films){
     selectEpisode.appendChild(option);
   });
  })
+
+  
+  
+  async function fetchShows() {
+      showLoading(); // Display loading message while fetching data
+      try {
+          const response = await fetch("https://api.tvmaze.com/shows");
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const showsData = await response.json();
+          console.log(showsData, "shows data");
+          return showsData;
+      } catch (error) {
+          showError(error);
+          console.error("Failed to fetch shows:", error);
+          return [];
+      }
+  }
+  
+  const showsDropdown = document.getElementById("showDropDown");
+  
+  fetchShows().then(function (shows) {
+      // Remove loading message if necessary
+      state.allShows = shows;
+      console.log(state);
+  
+      // Populate the shows dropdown
+      shows.forEach((show) => {
+          const option = document.createElement("option");
+          option.textContent = show.name; // Use show name
+          option.value = show.id; // Use show ID as the value
+          showsDropdown.appendChild(option);
+      });
+  });
+  
+
+
 
 // Event listener: Filters episodes based on search input
 const input = document.getElementById("searchInput");
