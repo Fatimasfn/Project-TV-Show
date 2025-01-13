@@ -264,7 +264,7 @@ root.addEventListener("click", (event) => {
       state.filteredFilms = episodesData
       state.allEpisodes = episodesData;
       renderEpisodes();
-      populateEpisodesDropdown();
+      populateEpisodesDropdown(state.filteredFilms);
     })
   } 
 });
