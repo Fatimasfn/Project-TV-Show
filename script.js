@@ -15,51 +15,68 @@ let state = {
 };
 
 // Function: Fetch all shows
-async function fetchShows() {
-  showLoading();
-  try {
-    const response = await fetch("https://api.tvmaze.com/shows");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const showsData = await response.json();
+function fetchShows() {
+  showLoading(); // Show loading indicator
 
-    // Sort shows alphabetically by name
+  return fetch("https://api.tvmaze.com/shows")
+    .then((response) => {
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Parse the JSON response
+      return response.json();
+    })
+    .then((showsData) => {
+      
     return showsData.sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
     );
-  } catch (error) {
-    showError(error);
-    console.error("Failed to fetch shows:", error);
-    return [];
-  }
-}
+      
+    })
+    .catch((error) => {
+      // Handle errors
+      showError(error);
+      console.error("Failed to fetch shows:", error);
 
+      // Return an empty array in case of an error
+      return [];
+    });
+}
 // Function: Fetch episodes for a selected show
-async function fetchEpisodes(showId) {
+function fetchEpisodes(showId) {
   // Check if episodes for this show are already fetched
   if (state.fetchedShows[showId]) {
     return state.fetchedShows[showId];
   }
 
   showLoading();
-  try {
-    const response = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes`);
+  return fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
+  .then(response=>{
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const episodesData = await response.json();
-
-    // Cache the fetched episodes for this show
-    state.fetchedShows[showId] = episodesData;
-    return episodesData;
-  } catch (error) {
+      return response.json()
+    
+  }
+)
+    .then( episodesData=>{
+      state.fetchedShows[showId] = episodesData;
+      return episodesData
+    }
+  )
+    
+    
+  
+  .catch (error=>{
     showError(error);
     console.error("Failed to fetch episodes:", error);
     return [];
   }
-}
 
+)
+}
 // Helper function: Show loading message
 function showLoading() {
   clear();
