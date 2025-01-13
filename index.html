@@ -12,10 +12,19 @@
     <header>
       <div>
         <label id="episodesNumber">Displaying 73/73 episodes</label>
-        <input id="searchInput" placeholder="Enter your search here ..." type="search">
+      <input id="searchInput" placeholder="Enter your search here ..." type="search"> 
         <label for="dropDown"></label>
         <select id="dropDown" name="options">
           <option value="" disabled selected>Select an episode</option>
+        </select>
+      </div>
+
+      <div>
+        <label id="showsNumber">Displaying shows</label>
+       <!--<input id="showSearchInput" placeholder="Enter your search here ..." type="search"> -->
+        <label for="showDropDown"></label>
+        <select id="showDropDown" name="options">
+          <option value="" disabled selected>Select a show</option>
         </select>
       </div>
     </header>
@@ -37,7 +46,7 @@
     <a href="https://www.tvmaze.com/api#licensing" target="_blank">TVMaze API Licensing</a>.
 </footer>
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+    
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>
