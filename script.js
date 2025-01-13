@@ -6,6 +6,8 @@ const selectEpisode = document.getElementById("dropDown");
 const searchInput = document.getElementById("searchInput");
 const episodeDisplayCounter = document.getElementById("episodesNumber");
 
+
+
 // Initial setup
 async function setup() {
   const shows = await fetchShows();
@@ -134,12 +136,15 @@ function createShowCard(show) {
   }
   
   const showCard = document.importNode(template.content, true);
+
+  const cardContainer = showCard.querySelector("#shows-section");
+  cardContainer.dataset.showId = show.id;
   
   const showName = showCard.querySelector("h3");
   showName.textContent = show.name;
 
   const genre = showCard.querySelector("#show-genre");
-  genre.textContent = show.genres.join(", "); // Assuming `genres` is an array
+  genre.textContent = show.genres.join(", "); 
 
   const showStatus = showCard.querySelector("#show-status");
   showStatus.textContent = `Status: ${show.status}`;
@@ -247,6 +252,21 @@ searchInput.addEventListener("keyup", () => {
   );
 
   renderEpisodes();
+});
+
+root.addEventListener("click", (event) => {
+  // Find the closest show card
+  const showCardSelected = event.target.closest("section"); 
+  if (showCardSelected) {
+    const showId = showCardSelected.dataset.showId;  
+    console.log(showId);
+    fetchEpisodes(showId).then((episodesData)=>{
+      state.filteredFilms = episodesData
+      state.allEpisodes = episodesData;
+      renderEpisodes();
+      populateEpisodesDropdown();
+    })
+  } 
 });
 
 
