@@ -240,6 +240,21 @@ selectEpisode.addEventListener("change", (event) => {
 
   state.filteredFilms = state.allEpisodes.filter((episode) => episode.id == episodeId);
   renderEpisodes();
+
+  let returnButton = document.querySelector("#returnButton");
+    if (!returnButton) {
+      returnButton = document.createElement("button");
+      returnButton.id = "returnButton";
+      returnButton.textContent = "Return to all episodes";
+      root.append(returnButton);
+
+      returnButton.addEventListener("click", () => {
+      // Reset to show all episodes
+      state.filteredFilms = state.allEpisodes;
+      renderEpisodes();
+      returnButton.remove();
+    });
+  }
 });
 
 // Event listener: Search input
@@ -255,9 +270,8 @@ searchInput.addEventListener("keyup", () => {
 });
 
 root.addEventListener("click", (event) => {
-  // Find the closest show card
   const showCardSelected = event.target.closest("section"); 
-  if (showCardSelected) {
+  
     const showId = showCardSelected.dataset.showId;  
     console.log(showId);
     fetchEpisodes(showId).then((episodesData)=>{
@@ -265,8 +279,9 @@ root.addEventListener("click", (event) => {
       state.allEpisodes = episodesData;
       renderEpisodes();
       populateEpisodesDropdown(state.filteredFilms);
+      selectShow.remove()
     })
-  } 
+  
 });
 
 
