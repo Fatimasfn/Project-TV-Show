@@ -64,7 +64,7 @@ function fetchEpisodes(showId) {
   if (state.fetchedShows[showId]) {
     return state.fetchedShows[showId];
   }
-  showLoading();
+  //showLoading();
   return fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
   .then(response=>{
     if (!response.ok) {
@@ -178,15 +178,37 @@ function episodeCode(episode) {
   return `S${episodeSeason}E${episodeNumber}`;
 }
 
+function addGoBackToAllShowsButton() {
+  const header = document.querySelector('header');
+  
+  const button = document.createElement('button');
+  button.textContent = 'Back to Shows';
+ 
+    button.addEventListener('click', () => {
+      //populateShowsDropdown(shows);
+      renderShows(state.allShows);     
+    })
+  
+  header.appendChild(button);
+}
+
+function clearEpisodes() {
+  const sections = document.querySelectorAll("#root section");
+  sections.forEach(section => section.remove());
+}
 
 // Render episodes
 function renderEpisodes() {
-  clear();
+  clearEpisodes();
   const episodeCards = state.filteredFilms.map(createEpisodeCard);
   root.append(...episodeCards);
 
   // Update episode count
   episodeDisplayCounter.textContent = `Displaying ${state.filteredFilms.length} / ${state.allEpisodes.length}`;
+
+  // navigation link to enable the user to return to the "shows listing"
+  addGoBackToAllShowsButton();
+
 }
 
 function renderShows(shows) {
@@ -242,13 +264,13 @@ selectEpisode.addEventListener("change", (event) => {
   renderEpisodes();
 
   let returnButton = document.querySelector("#returnButton");
-    if (!returnButton) {
-      returnButton = document.createElement("button");
-      returnButton.id = "returnButton";
-      returnButton.textContent = "Return to all episodes";
-      root.append(returnButton);
+      if (!returnButton) {
+    returnButton = document.createElement("button");
+    returnButton.id = "returnButton";
+    returnButton.textContent = "Return to all episodes";
+    root.append(returnButton);
 
-      returnButton.addEventListener("click", () => {
+    returnButton.addEventListener("click", () => {
       // Reset to show all episodes
       state.filteredFilms = state.allEpisodes;
       renderEpisodes();
@@ -279,10 +301,13 @@ root.addEventListener("click", (event) => {
       state.allEpisodes = episodesData;
       renderEpisodes();
       populateEpisodesDropdown(state.filteredFilms);
-      selectShow.remove()
+      const selectShow = document.getElementById("showDropDown");
+      selectShow.remove();
+      
     })
   
 });
+
 
 
 
