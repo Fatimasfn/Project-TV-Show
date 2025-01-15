@@ -20,6 +20,7 @@ async function setup() {
 }
 
 let state = {
+  mode: "shows",  // or "episodes"
   searchTerm: "",
   filteredFilms: [],
   allEpisodes: [],
@@ -198,10 +199,11 @@ function addGoBackToAllShowsButton() {
             button.remove(); 
             state.searchTerm = "";
             selectShow.value = "";
-            searchInput.value="";
-            selectShow.style.display = "inline-block"; // Show the Show dropdown again
+            //searchInput.value="";
+            selectShow.style.display = "inline-block"; 
             searchInput.placeholder = "Enter your search here ...";
-            
+            searchInputShows.style.display = "inline-block";
+            showsSearchLabel.style.display = "inline-block";
         });
 
         header.appendChild(button);
@@ -227,6 +229,9 @@ function renderEpisodes() {
   // Update episode count
   episodeDisplayCounter.textContent = `Displaying ${state.filteredFilms.length} / ${state.allEpisodes.length}`;
   // navigation link to enable the user to return to the "shows listing"
+  searchInput.style.display = "inline-block";
+  showsSearchLabel.textContent = "Filter Shows: "
+  searchInputShows.style.display = "none";
   addGoBackToAllShowsButton();
 
 }
@@ -244,6 +249,7 @@ function renderShows(shows) {
 
   episodeDisplayCounter.innerHTML = "";
   selectEpisode.style.display = "none";
+  searchInput.style.display = "none";
   
 }
 
@@ -288,6 +294,7 @@ selectShow.addEventListener("change", async (event) => {
   renderEpisodes();
 
    selectShow.style.display = "none";
+   showsSearchLabel.style.display = "none";
     searchInput.placeholder = "Search episodes...";
 });
 
@@ -321,31 +328,20 @@ selectEpisode.addEventListener("change", (event) => {
 
 // Event listener: Search input
 searchInput.addEventListener("keyup", () => {
-    state.searchTerm = searchInput.value.toLowerCase();
+  state.searchTerm = searchInput.value.toLowerCase();
 
-    if (state.allEpisodes.length > 0) {
-        // If episodes are loaded
-        state.filteredFilms = state.allEpisodes.filter((episode) =>
-            episode.name.toLowerCase().includes(state.searchTerm) ||
-            episode.summary?.toLowerCase().includes(state.searchTerm)
-        );
-        //console.log(state.filteredFilms)
-        //clearEpisodes()
-        const episodeCards = document.querySelectorAll(".episode-card");
+  state.filteredFilms = state.allEpisodes.filter((episode) =>
+    episode.name.toLowerCase().includes(state.searchTerm) ||
+    episode.summary?.toLowerCase().includes(state.searchTerm)
+  );
+
+  const episodeCards = document.querySelectorAll(".episode-card");
         episodeCards.forEach((card) => card.remove());
         renderEpisodes();
-    } else {
-        // If no episodes are loaded, filter shows
-        const filteredShows = state.allShows.filter(show =>
-            show.name.toLowerCase().includes(state.searchTerm) ||
-            show.summary.toLowerCase().includes(state.searchTerm)
-        );
-        console.log(filteredShows)
-        const showCards = document.querySelectorAll(".show-card");
-        showCards.forEach((card) => card.remove());
-        renderShows(filteredShows);
-    }
+
+  renderEpisodes();
 });
+      
 
 root.addEventListener("click", (event) => {
     const showCard = event.target.closest("#shows-section");
@@ -360,6 +356,48 @@ root.addEventListener("click", (event) => {
             searchInput.placeholder = "Search episodes..."; // Update search placeholder
         });
     }
+});
+
+
+
+
+// Create a new search input for shows.
+const searchInputShows = document.createElement("input");
+searchInputShows.id = "searchInputShows";
+searchInputShows.type = "search";
+searchInputShows.placeholder = "Search shows by name, genre, or summary...";
+
+
+const showsSearchLabel = document.createElement("label");
+showsSearchLabel.textContent = "Filter Shows: ";
+showsSearchLabel.htmlFor = "searchInputShows";
+
+const header = document.querySelector("header");
+header.appendChild(showsSearchLabel);
+header.appendChild(searchInputShows);
+
+
+searchInputShows.addEventListener("keyup", () => {
+  const searchTerm = searchInputShows.value.toLowerCase();
+
+  const filteredShows = state.allShows.filter((show) => {
+    const name = show.name.toLowerCase();
+    const genres = show.genres.join(" ").toLowerCase();
+    const summary = (show.summary || "").toLowerCase();
+
+    return (
+      name.includes(searchTerm) ||
+      genres.includes(searchTerm) ||
+      summary.includes(searchTerm)
+    );
+  });
+
+  
+  const showSections = document.querySelectorAll("#shows-container section");
+  showSections.forEach((section) => section.remove());
+
+  showsSearchLabel.textContent = "Filtering for: "
+  renderShows(filteredShows);
 });
 
 
