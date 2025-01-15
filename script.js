@@ -20,7 +20,7 @@ async function setup() {
 }
 
 let state = {
-  mode: "shows",  // or "episodes"
+  //mode: "shows",  // or "episodes"
   searchTerm: "",
   filteredFilms: [],
   allEpisodes: [],
@@ -85,7 +85,6 @@ function fetchEpisodes(showId) {
     return [];
   }
 )}
-
 
 // Helper function: Show loading message
 function showLoading() {
@@ -226,11 +225,10 @@ function renderEpisodes() {
   const episodeCards = state.filteredFilms.map(createEpisodeCard);
   root.append(...episodeCards);
 
-  // Update episode count
   episodeDisplayCounter.textContent = `Displaying ${state.filteredFilms.length} / ${state.allEpisodes.length}`;
   // navigation link to enable the user to return to the "shows listing"
   searchInput.style.display = "inline-block";
-  showsSearchLabel.textContent = "Filter Shows: "
+  showsSearchLabel.textContent = ""
   searchInputShows.style.display = "none";
   addGoBackToAllShowsButton();
 
@@ -250,6 +248,7 @@ function renderShows(shows) {
   episodeDisplayCounter.innerHTML = "";
   selectEpisode.style.display = "none";
   searchInput.style.display = "none";
+  showsSearchLabel.textContent = "Filter Shows: ";
   
 }
 
@@ -298,7 +297,6 @@ selectShow.addEventListener("change", async (event) => {
     searchInput.placeholder = "Search episodes...";
 });
 
-
 // Event listener: Handle episode selection
 selectEpisode.addEventListener("change", (event) => {
   const episodeId = event.target.value;
@@ -342,7 +340,6 @@ searchInput.addEventListener("keyup", () => {
   renderEpisodes();
 });
       
-
 root.addEventListener("click", (event) => {
     const showCard = event.target.closest("#shows-section");
     if (showCard) {
@@ -357,8 +354,6 @@ root.addEventListener("click", (event) => {
         });
     }
 });
-
-
 
 
 // Create a new search input for shows.
