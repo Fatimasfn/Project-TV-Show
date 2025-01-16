@@ -230,6 +230,7 @@ function renderEpisodes() {
   searchInput.style.display = "inline-block";
   showsSearchLabel.textContent = ""
   searchInputShows.style.display = "none";
+  selectEpisode.style.display = "inline-block"
   addGoBackToAllShowsButton();
 
 }
