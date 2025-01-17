@@ -1,49 +1,37 @@
 
-/*#root {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-}*/
-
-/* Styling for the root container */
 #root {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
   padding: 1rem;
   margin: 0 auto;
-  /* Center the grid */
+ 
   justify-content: center;
-  /* Center items in the grid */
 }
 
-/* Style for each episode card container */
-section {
+
+.episode-card {
   position: relative;
   background: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 10px;
   overflow: hidden;
-  /* Ensures button is contained within the card */
+ 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Ensures content is spaced out */
   height: 350px;
-  /* Fixed height for card */
+  
+  margin-bottom: 1rem;
+  
 }
 
 
-section button:hover {
-  background-color: #555;
-  /* Change color on hover */
-}
 
-/* Styling for the episode name, code, image, and summary */
-section h3 {
+/* Styling for the episode name, code, image, and summary within episode cards */
+.episode-card h3 {
   font-size: 1.2rem;
   color: #333;
   margin-bottom: 10px;
@@ -55,7 +43,7 @@ section h3 {
   margin-bottom: 15px;
 }
 
-section img {
+.episode-card img {
   width: 100%;
   height: auto;
   border-radius: 5px;
@@ -73,6 +61,44 @@ section img {
 }
 
 
+#shows-section {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+}
 
+/* Show title */
+#shows-section h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #222;
+}
 
+/* Basic paragraph styling for genre, status, rating, runtime */
+#shows-section p {
+  margin: 0.25rem 0;
+  color: #555;
+  line-height: 1.4;
+}
 
+/* Show summary styling */
+#show-summary {
+  margin-top: 0.5rem;
+  color: #333;
+  /* If you want a fixed max height with a scrollbar: */
+  /* max-height: 180px;
+     overflow-y: auto; */
+}
+
+/* Show image styling */
+#showImg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
